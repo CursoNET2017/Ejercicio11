@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Ejercicio11
 {
-    public class Class1
+    public class BasculaService : IBasculaService
     {
+        public float Pesar(Alimento a)
+        {
+            return a.peso;
+        }
     }
 }
