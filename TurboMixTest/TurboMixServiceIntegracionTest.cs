@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ejercicio11;
+using Microsoft.Practices.Unity;
 
 namespace TurboMixTest
 {
@@ -9,14 +10,24 @@ namespace TurboMixTest
     {
         private Alimento a;
         private Alimento b;
-        private IBasculaService basculaService;
-        private ICocinaService cocinaService;
+        //private IBasculaService basculaService;
+        //private ICocinaService cocinaService;
+        IUnityContainer container;
+        ITurboMixService sut;
 
         [TestInitialize]
         public void Init()
         {
-            basculaService = new BasculaService();
-            cocinaService = new CocinaService();
+            //basculaService = new BasculaService();
+            //cocinaService = new CocinaService();
+            container = new UnityContainer();
+            container.RegisterType<IBasculaService, BasculaService>();
+            container.RegisterType<ICocinaService, CocinaService>();
+            container.RegisterType<IComprobarReceta, ComprobarReceta>();
+            container.RegisterType<ITurboMixService, TurboMixService>();
+
+            sut = container.Resolve<ITurboMixService>();
+
             a = new Alimento();
             a.peso = 25F;
             a.nombre = "Pollo";
@@ -46,10 +57,10 @@ namespace TurboMixTest
             d.nombre = "Curry";
             Receta recipe = new Receta(c, d);
 
-            IComprobarReceta compro = new ComprobarReceta();
+            //IComprobarReceta compro = new ComprobarReceta();
 
             //***
-            TurboMixService sut = new TurboMixService(basculaService, cocinaService, compro);
+            //TurboMixService sut = new TurboMixService(basculaService, cocinaService, compro);
 
             Plato resultado = sut.HacerComida(a, b, recipe);//***+++***
             Plato mplato = new Plato(a, b);
